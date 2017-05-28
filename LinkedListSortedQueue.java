@@ -1,10 +1,5 @@
 package week11;
- 
-/**
- *
- * @author Nurdaulet_Yeltayev
- * @param <T>
- */
+
 public class LinkedListSortedQueue<T extends Comparable> implements SortedQueue<T>{
  
     private Node<T> front;
