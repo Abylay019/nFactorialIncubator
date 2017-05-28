@@ -1,11 +1,7 @@
 package week11;
 
 
-/**
- *
- * author Yeltayev_Nurdaulet
- * @param <T>
- */
+
 public class ArrayStack<T> implements Stack<T>{
     
     private T[] values;
