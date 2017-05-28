@@ -5,10 +5,7 @@
  */
 package week11;
 
-/**
- *
- * @author Duimagambetov Alpamys
- */
+
 public class LinkedListStack<T> implements Stack<T> {
     
     private Node<T> top;
