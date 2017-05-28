@@ -1,0 +1,176 @@
+#include <stdio.h>  //
+#include <stdlib.h> //libraries
+#include <string.h> //
+
+typedef struct {        //defining deed struct
+    int deed_id;
+    char deed_name[55];
+    int points_for_deed;
+    int total_times_done;
+    int total_points_earned;
+} deed;
+
+void swap_deed(deed *a, deed *b){   //function to swap deed structs
+    deed temp;
+    temp = *a;
+    *a = *b;
+    *b = temp;
+}
+
+void printing (int b, deed a){  //function to print deed structs
+    int x;
+    x = 65 - strlen(a.deed_name);   //variable for free spaces in the printing
+    printf("%2d %3d %s %*d %6d %7d\n", b, a.deed_id,
+           a.deed_name, x, a.points_for_deed, a.total_times_done, a.total_points_earned);
+}
+
+int search_deed(int size, deed a[size], char str[]){    //function to search deed by name
+    int i;
+    int min = 0;
+    int max = size - 1;
+    int guess;
+
+    while(min <= max){
+        guess = (min + max) / 2;
+        if (strcmp(a[guess].deed_name, str) == 0){      //when function finds the same deed_names,
+            return guess;                               //it will return its index in the array
+        }
+        else if (strcmp(a[guess].deed_name, str) > 0){
+            max = guess - 1;
+        }
+
+        else if (strcmp(a[guess].deed_name, str) < 0){
+            min = guess + 1;
+        }
+    }
+    return -1;                                          //if function cannot find the name,
+                                                        //it returns -1, the number which we will use in loop
+}
+
+int main(){         //main body
+    setvbuf(stdout, NULL, _IONBF, 0);
+
+    FILE *infile1, *infile2;
+
+    infile1 = fopen("deed_list.txt", "r");  //opening files to read data from
+    infile2 = fopen("daylog.txt", "r");     //
+    if(infile1 == NULL || infile2 == NULL){ //checking for errors
+        printf("Problem!");
+        return 1;
+    }
+
+
+    int total_deeds;
+    fscanf(infile1, "%d", &total_deeds);    //reading total_deeds
+
+    deed *array_of_deeds = malloc(total_deeds*sizeof(deed));    //dynamically creating array of deeds
+
+    int i = 0;
+    for ( ; i < total_deeds; i++){                                                  //
+        fscanf(infile1, "%d %s %d", &array_of_deeds[i].deed_id,                     //
+               &array_of_deeds[i].deed_name, &array_of_deeds[i].points_for_deed);   //reading and assigning data
+        array_of_deeds[i].total_times_done = 0;                                     //
+        array_of_deeds[i].total_points_earned = 0;                                  //
+    }
+    int id, times;
+    while(!feof(infile2)){  //loop for calculating total_times and total_points
+        fscanf(infile2, "%d %d", &id, &times);
+        for (i = 0; i < total_deeds; i++){
+            if (array_of_deeds[i].deed_id == id){
+                array_of_deeds[i].total_times_done += times;
+                array_of_deeds[i].total_points_earned += array_of_deeds[i].points_for_deed * times;
+            }
+        }
+    }
+    //task1
+    int j;
+    for (i = 0; i < total_deeds; i++){  //loop for bubble sort, here deeds will be sorted by tota_times
+        for (j = i + 1; j < total_deeds; j++){
+            if (array_of_deeds[i].total_times_done < array_of_deeds[j].total_times_done){
+                swap_deed(&array_of_deeds[i], &array_of_deeds[j]);
+            }
+        }
+    }
+    printf(" task1: after sort by deeds_total_times_done:\n");                                          //printing
+    printf("No |      --------- deed_name -----------                       |deed   |total |total\n");  //headings
+    printf("   |                                                            |point  |times |points\n"); //
+    for (i = 0; i < total_deeds; i++){  //loop for printing sorted deeds
+        if (array_of_deeds[i].total_times_done != 0){   //condition to check is deed performed or not
+            printing(i, array_of_deeds[i]);
+        }
+    }
+    printf("\n");
+
+    //task2
+    for (i = 0; i < total_deeds; i++){  //loop for bubble sort, here deeds will be sorted by total_points
+        for (j = i + 1; j < total_deeds; j++){
+            if (array_of_deeds[i].total_points_earned < array_of_deeds[j].total_points_earned){
+                swap_deed(&array_of_deeds[i], &array_of_deeds[j]);
+            }
+        }
+    }
+    printf(" task2: after sort by deeds_total_points_earned:\n");                                       //printing
+    printf("No |      --------- deed_name -----------                       |deed   |total |total\n");  //headings
+    printf("   |                                                            |point  |times |points\n"); //
+    for (i = 0; i < total_deeds; i++){  //loop for printing
+        if (array_of_deeds[i].total_times_done != 0){   //condition to check is deed performed or not
+            printing(i, array_of_deeds[i]);
+        }
+    }
+    printf("\n");
+
+    //task3 & 4
+    int number_deeds = 0, total_points = 0; //initializing variables to total number of deeds and total points
+    for (i = 0; i < total_deeds; i++){  //for loop to calculate total number of deeds and total points
+        number_deeds += array_of_deeds[i].total_times_done;
+        total_points += array_of_deeds[i].total_points_earned;
+    }
+    printf("task3: total deed_counts:\n%d deeds\n\n", number_deeds);    //printing task3
+    printf("task4: total deed_points:\n%d points\n\n", total_points);       //printing task4
+
+    //task5
+
+    for (i = 0; i < total_deeds; i++){  //for loop for bubble sort with strcmp function to sort alphabetically
+        for (j = i + 1; j < total_deeds; j++){
+            if (strcmp(array_of_deeds[i].deed_name, array_of_deeds[j].deed_name) > 0){
+                swap_deed(&array_of_deeds[i], &array_of_deeds[j]);
+            }
+        }
+    }
+    j = 0;
+    printf(" task5: after sort alphabetically:\n");                                                     //printing
+    printf("No |      --------- deed_name -----------                       |deed   |total |total\n");  //headings
+    printf("   |                                                            |point  |times |points\n"); //
+    for (i = 0; i < total_deeds; i++){  //loop for printing
+        if (array_of_deeds[i].total_times_done != 0){   //condition to check is deed performed or not
+            printing(j, array_of_deeds[i]);
+            j++;    //for consequetive listing numbers
+        }
+    }
+    printf("\n");
+
+    //task6
+    char str[55];
+    printf("Enter a deed name to search: ");
+    scanf("%s", str);
+    int result;
+    i = 1;
+    result = search_deed (total_deeds, array_of_deeds, str);    //calling search function
+
+    while (result != -1){   //loop will terminate when the given name by user is not same as one in the list
+        printf ("task6: search case%d:\n%s %d times %d points earned\n\n\n",
+                i, str, array_of_deeds[result].total_times_done, array_of_deeds[result].total_points_earned);
+        printf ("Enter another deed name to search: ");
+        scanf ("%s", str);
+        result = search_deed (total_deeds, array_of_deeds, str);
+        i++;
+    }
+
+    printf ("No such deed");    //as loop will terminate when it search function could not find deed_name,
+                                //just print "No such deed"
+
+    fclose(infile1);//
+    fclose(infile2);//close files
+
+    return 0;//terminating program
+}
