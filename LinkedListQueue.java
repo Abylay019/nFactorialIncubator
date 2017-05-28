@@ -6,11 +6,6 @@
 package week11;
 
 
-/**
- *
- * @author Nurdaulet_Yeltayev
- * @param <T>
- */
 public class LinkedListQueue<T> implements Queue<T> {
 
     private int size;
