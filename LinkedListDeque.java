@@ -5,10 +5,7 @@
  */
 package week11;
 
-/**
- *
- * partner Yeltayev_Nurdaulet
- */
+
 public class LinkedListDeque<T> implements Deque<T> {
     
     private DoublyLinkedNode<T> front;
