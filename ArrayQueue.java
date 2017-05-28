@@ -1,10 +1,6 @@
 package week11;
 
-/**
- *
- * author: Yeltayev_Nurdaulet
- * @param <T>
- */
+
 public class ArrayQueue<T> implements Queue<T> {
 
     private T[] values;
