@@ -1,10 +1,7 @@
 package week11;
 
 
-/**
- *
- * @author Yeltayev_Nurdaulet
- */
+
 public class ArrayIntQueue implements IntQueue {
     
     private int[] values;
