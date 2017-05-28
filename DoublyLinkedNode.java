@@ -1,10 +1,6 @@
 package week11;
 
-/**
- *
- * @author Nurdaulet Yeltayev   
- * @param <T>   
- */
+
 public class DoublyLinkedNode<T> {
   
     private T value;
