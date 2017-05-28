@@ -1,8 +1,5 @@
 package week11;
-/**
- *
- * author Yeltayev_Nurdaulet
- */
+
 
 /**
  * Generic node class for creating linked-lists
