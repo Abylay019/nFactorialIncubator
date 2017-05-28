@@ -1,9 +1,6 @@
 package week11;
 
-/**
- *
- * @author Yeltayev_Nurdaulet
- */
+
 
 public class ArrayIntStack implements IntStack{
     
